@@ -1,27 +1,36 @@
-import { useState } from 'react';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [grid, setGrid] = useState(Array.from({ length: 9 }, () => Array(9).fill('')));
+  const [grid, setGrid] = useState(
+    Array.from({ length: 9 }, () => Array(9).fill(""))
+  );
 
   const handleChange = (row, col, e) => {
     const value = e.target.value;
-
-    setGrid(prevGrid => {
-      return prevGrid.map((r, rowIndex) =>
-        r.map((cell, colIndex) =>
-          rowIndex === row && colIndex === col ? value : cell
-        )
-      );
-    });
+    if (!isNaN) {
+      setGrid((prevGrid) => {
+        return prevGrid.map((r, rowIndex) =>
+          r.map((cell, colIndex) =>
+            rowIndex === row && colIndex === col ? value : cell
+          )
+        );
+      });
+    }
   };
 
   const handleSubmit = () => {
-    const gridCopy = grid.map(row => row.map(cell => (cell === '' ? 0 : parseInt(cell, 10))));
+    const gridCopy = grid.map((row) =>
+      row.map((cell) => (cell === "" ? 0 : parseInt(cell, 10)))
+    );
     if (solve(gridCopy, 0, 0)) {
-      setGrid(gridCopy.map(row => row.map(cell => (cell === 0 ? '' : cell.toString()))));
+      setGrid(
+        gridCopy.map((row) =>
+          row.map((cell) => (cell === 0 ? "" : cell.toString()))
+        )
+      );
     } else {
-      alert('Unsolvable');
+      alert("Unsolvable");
     }
   };
 
@@ -72,11 +81,11 @@ function App() {
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} className="row">
             {row.map((cell, colIndex) => (
-              <input 
+              <input
                 key={colIndex}
-                type='text'
+                type="text"
                 value={cell}
-                className='Cell'
+                className="Cell"
                 maxLength={1}
                 onChange={(e) => handleChange(rowIndex, colIndex, e)}
               />
