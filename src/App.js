@@ -8,7 +8,7 @@ function App() {
 
   const handleChange = (row, col, e) => {
     const value = e.target.value;
-    if (!isNaN) {
+    if (!isNaN(value)) {
       setGrid((prevGrid) => {
         return prevGrid.map((r, rowIndex) =>
           r.map((cell, colIndex) =>
