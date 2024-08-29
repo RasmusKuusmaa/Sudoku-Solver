@@ -16,6 +16,55 @@ function App() {
     });
   };
 
+  const handleSubmit = () => {
+    const gridCopy = grid.map(row => row.map(cell => (cell === '' ? 0 : parseInt(cell, 10))));
+    if (solve(gridCopy, 0, 0)) {
+      setGrid(gridCopy.map(row => row.map(cell => (cell === 0 ? '' : cell.toString()))));
+    } else {
+      alert('Unsolvable');
+    }
+  };
+
+  const isValidMove = (grid, row, col, num) => {
+    for (let i = 0; i < 9; i++) {
+      if (grid[row][i] === num || grid[i][col] === num) {
+        return false;
+      }
+    }
+    const cornerRow = row - (row % 3);
+    const cornerCol = col - (col % 3);
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (grid[cornerRow + i][cornerCol + j] === num) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const solve = (grid, row, col) => {
+    if (col === 9) {
+      if (row === 8) {
+        return true;
+      }
+      row += 1;
+      col = 0;
+    }
+    if (grid[row][col] !== 0) {
+      return solve(grid, row, col + 1);
+    }
+    for (let num = 1; num <= 9; num++) {
+      if (isValidMove(grid, row, col, num)) {
+        grid[row][col] = num;
+        if (solve(grid, row, col + 1)) {
+          return true;
+        }
+        grid[row][col] = 0;
+      }
+    }
+    return false;
+  };
 
   return (
     <div className="App">
@@ -35,7 +84,7 @@ function App() {
           </div>
         ))}
       </div>
-      <button onClick={() => console.log(grid)}>SOLVE</button>
+      <button onClick={handleSubmit}>SOLVE</button>
     </div>
   );
 }
